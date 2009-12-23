@@ -1,4 +1,4 @@
-#import "erl_nif.h"
+#import "pytherl.h"
 
 void erl_list_to_string(ErlNifEnv *env, ERL_NIF_TERM list, char *string) {
   ERL_NIF_TERM head, tail;
@@ -15,3 +15,7 @@ void erl_list_to_string(ErlNifEnv *env, ERL_NIF_TERM list, char *string) {
 
   *string = '\0';
 };
+
+PyObject *get_none() {
+  Py_RETURN_NONE;
+}

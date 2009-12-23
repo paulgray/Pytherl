@@ -1,4 +1,4 @@
-#import "Python.h"
+#include "pytherl.h"
 
 char *hello_from_python() {
   PyRun_SimpleString("from pytherl import pytherl");

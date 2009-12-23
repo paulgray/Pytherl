@@ -1,12 +1,6 @@
-#include "Python.h"
-#include "erl_nif.h"
+#include "pytherl.h"
 
 // TODO: implement reload and upgrade functions
-// TODO: create a proper header file with all imports and declarations
-
-char *hello_from_python();
-int re_match_py(char *, char *);
-void erl_list_to_string(ErlNifEnv *, ERL_NIF_TERM, char *);
 
 static ERL_NIF_TERM hello(ErlNifEnv* env) {
   return enif_make_string(env, hello_from_python());

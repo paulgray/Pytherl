@@ -1,8 +1,4 @@
-#import "Python.h"
-
-PyObject *get_none() {
-  Py_RETURN_NONE;
-}
+#import "pytherl.h"
 
 int re_match_py(char *subject, char *pattern) {
   char command[4096];
