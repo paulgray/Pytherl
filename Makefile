@@ -15,16 +15,16 @@ ERLDIR=ebin/
 
 C_FILES=$(wildcard $(SRC_CDIR)*c)
 DRIVER=$(CDIR)pytherl.so
-BEAM=$(ERLDIR)pytherl.beam
+BEAM=$(ERLDIR)pytherl.beam $(ERLDIR)python_re.beam $(ERLDIR)pe_generator.beam
 
 all: $(DRIVER) $(BEAM)
 
 clean:
 	rm -f $(CDIR)*o $(DRIVER) $(ERLDIR)*beam
 
-$(ERLDIR)%.beam: $(SRC_ERLDIR)%.erl
+$(ERLDIR)%.beam: $(SRC_ERLDIR)%.erl include/pytherl.hrl
 	@echo ERLC $<
-	@erlc $(ERLCFLAGS) -o $(ERLDIR) $<
+	@erlc $(ERLCFLAGS) -o $(ERLDIR) -I include $<
 
 $(DRIVER): $(C_FILES)
 	@echo GCC $<

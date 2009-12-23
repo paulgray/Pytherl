@@ -3,6 +3,8 @@
 -export([init/0]).
 -export([hello/0, match/2]).
 
+-include("pytherl.hrl").
+
 init() ->
     erlang:load_nif("./priv/pytherl", 0).
 
