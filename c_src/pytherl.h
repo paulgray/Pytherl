@@ -3,6 +3,7 @@
 
 // pytherl_utils
 void erl_list_to_string(ErlNifEnv *env, ERL_NIF_TERM list, char *string);
+void erl_list_to_py_list(ErlNifEnv *env, ERL_NIF_TERM list, PyObject *pyList);
 PyObject *get_none();
 
 // hello_python

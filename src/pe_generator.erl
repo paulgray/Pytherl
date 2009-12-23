@@ -97,8 +97,8 @@ get_var_mapping(list, string, Name) ->
 get_var_mapping(list, list, Name) ->
     SName = atom_to_list(Name),
     ["PyListObject __pytherl_", SName, ";\n",
-     "erl_list_to_py_list(env, ", SName, ", &__pytherl_", SName, ");\n"];
-get_var_mapping(tuple, tuple, Name) ->
-    SName = atom_to_list(Name),
-    ["PyTupleObject __pytherl_", SName, ";\n",
-     "erl_tuple_to_py_tuple(env, ", SName, ", &__pytherl_", SName, ");\n"].
+     "erl_list_to_py_list(env, ", SName, ", &__pytherl_", SName, ");\n"].
+%% get_var_mapping(tuple, tuple, Name) ->
+%%     SName = atom_to_list(Name),
+%%     ["PyTupleObject __pytherl_", SName, ";\n",
+%%      "erl_tuple_to_py_tuple(env, ", SName, ", &__pytherl_", SName, ");\n"].
