@@ -4,8 +4,9 @@ PYTHON_INCLUDE=/usr/include/python2.6/
 INCLUDES= -I$(ERL_INCLUDE) -I$(PYTHON_INCLUDE)
 
 GCC_FLAGS=-fPIC -shared -Wall
+LIBS=-lpython2.6
 
-CFLAGS=$(GCC_FLAGS) $(INCLUDES)
+CFLAGS=$(GCC_FLAGS) $(INCLUDES) $(LIBS)
 
 SRC_CDIR=c_src/
 SRC_ERLDIR=src/
@@ -27,4 +28,4 @@ $(ERLDIR)%.beam: $(SRC_ERLDIR)%.erl
 
 $(DRIVER): $(C_FILES)
 	@echo GCC $<
-	@gcc -o $@ $(CFLAGS) $<
+	@gcc -o $@ $(CFLAGS) $(C_FILES)
