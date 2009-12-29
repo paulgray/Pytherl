@@ -7,21 +7,22 @@ static ERL_NIF_TERM nif_call(ErlNifEnv* env,
                              ERL_NIF_TERM e_fun,
                              ERL_NIF_TERM e_args) {
   
+  int arg_size;
   char mod[4096], fun[4096];
   erl_list_to_string(env, e_mod, mod);
   erl_list_to_string(env, e_fun, fun);
-  char *args = erl_arg_list_to_string(env, e_args);
+  char *args = erl_arg_list_to_string(env, e_args, &arg_size);
 
   if(args == NULL) {
     return enif_make_badarg(env);
   };
 
-  //  pytherl_call(mod, fun, args);
+  PyObject *pyRes = pytherl_call(mod, fun, args, arg_size);
+  ERL_NIF_TERM erlRes = py_to_erl(env, pyRes);
 
-  ERL_NIF_TERM ret = enif_make_atom(env, args);
   free(args);
 
-  return ret;
+  return erlRes;
 }
 
 static int load(ErlNifEnv *env, void** priv, ERL_NIF_TERM load_info) {

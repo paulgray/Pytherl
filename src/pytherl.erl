@@ -3,6 +3,11 @@
 -export([init/0]).
 -export([call/3]).
 
+%% TODO - implement helper functions for calling native Python funs:
+%% call/2
+
+%% TODO - use code:priv_dir(pytherl) to access the driver
+
 -include("pytherl.hrl").
 
 -spec(init/0 :: () -> ok | {error, atom(), string()}).

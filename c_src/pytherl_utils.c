@@ -17,7 +17,8 @@ void erl_list_to_string(ErlNifEnv *env, ERL_NIF_TERM list, char *string) {
 };
 
 char *erl_arg_list_to_string(ErlNifEnv *env,
-                             ERL_NIF_TERM list) {
+                             ERL_NIF_TERM list,
+                             int *arg_size) {
   ERL_NIF_TERM head, tail;
   char str_length[PREFIX_LEN], *args;
   int i, length, character;
@@ -39,6 +40,7 @@ char *erl_arg_list_to_string(ErlNifEnv *env,
   args = (char *)malloc(sizeof(char)*length);
 
   erl_list_to_string(env, list, args);
+  *arg_size = length;
 
   return args;
 };

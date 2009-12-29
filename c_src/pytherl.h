@@ -8,12 +8,15 @@
 
 // pytherl_utils
 void erl_list_to_string(ErlNifEnv *env, ERL_NIF_TERM list, char *string);
-char *erl_arg_list_to_string(ErlNifEnv *env, ERL_NIF_TERM list);
+char *erl_arg_list_to_string(ErlNifEnv *env, ERL_NIF_TERM list, int *arg_size);
 void erl_list_to_py_list(ErlNifEnv *env, ERL_NIF_TERM list, PyObject *pyList);
 PyObject *get_none();
 
 // pytherl_interpreter
-ERL_NIF_TERM pytherl_call(char *mod, char *fun, char *args);
+PyObject *pytherl_call(char *mod, char *fun, char *args, int arg_size);
+
+// pytherl_converter
+ERL_NIF_TERM py_to_erl(ErlNifEnv* env, PyObject *pyObj);
 
 // hello_python
 char *hello_from_python();
