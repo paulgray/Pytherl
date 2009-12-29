@@ -26,12 +26,12 @@ static ERL_NIF_TERM nif_call(ErlNifEnv* env,
 }
 
 static int load(ErlNifEnv *env, void** priv, ERL_NIF_TERM load_info) {
-  Py_Initialize();
+  //  Py_Initialize();
   return 0;
 }
 
 static void unload(ErlNifEnv* env, void* priv) {
-  Py_Finalize();
+  //  Py_Finalize();
 }
 
 static ErlNifFunc nif_funcs[] = {

@@ -36,8 +36,8 @@ char *erl_arg_list_to_string(ErlNifEnv *env,
     }
   };
 
-  length = atoi(str_length);
-  args = (char *)malloc(sizeof(char)*length);
+  length = atoi(str_length)+1;
+  args = (char *)calloc(length, sizeof(char));
 
   erl_list_to_string(env, list, args);
   *arg_size = length;

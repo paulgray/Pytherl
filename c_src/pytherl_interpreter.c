@@ -4,6 +4,10 @@ PyObject *pytherl_call(char *mod, char *fun, char *args, int arg_size) {
   char *command = (char *)calloc(2*(arg_size + strlen(fun)), sizeof(char));
   assert(command);
 
+  if(!Py_IsInitialized()) {
+    Py_Initialize();
+  }
+
   sprintf(command, "import %s", mod);
   PyRun_SimpleString(command);
 
