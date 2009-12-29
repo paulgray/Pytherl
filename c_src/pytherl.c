@@ -12,11 +12,16 @@ static ERL_NIF_TERM nif_call(ErlNifEnv* env,
   erl_list_to_string(env, e_fun, fun);
   char *args = erl_arg_list_to_string(env, e_args);
 
-  pytherl_call(mod, fun, args);
+  if(args == NULL) {
+    return enif_make_badarg(env);
+  };
 
+  //  pytherl_call(mod, fun, args);
+
+  ERL_NIF_TERM ret = enif_make_atom(env, args);
   free(args);
 
-  return "something";
+  return ret;
 }
 
 static int load(ErlNifEnv *env, void** priv, ERL_NIF_TERM load_info) {

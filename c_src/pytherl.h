@@ -1,5 +1,10 @@
+#ifndef _PYTHERL_H_
+#define _PYTHERL_H_
+
 #import "Python.h"
 #import "erl_nif.h"
+
+#define PREFIX_LEN 8
 
 // pytherl_utils
 void erl_list_to_string(ErlNifEnv *env, ERL_NIF_TERM list, char *string);
@@ -15,3 +20,5 @@ char *hello_from_python();
 
 // re_run_python
 int re_match_py(char *, char *);
+
+#endif // _PYTHERL_H_

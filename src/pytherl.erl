@@ -14,7 +14,7 @@ call(Mod, Fun, Args) when is_list(Mod),
                           is_integer(hd(Mod)) ->
     call([Mod], Fun, Args);
 call(Mod, Fun, Args0) ->
-    Args1 = lists:map(fun transform_params/1, Args0),
+    Args1 = string:join(lists:map(fun transform_params/1, Args0), ", "),
     Args = string:right(integer_to_list(length(Args1)), 8, $0) ++
         Args1,
     
