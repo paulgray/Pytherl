@@ -12,7 +12,7 @@
 
 -spec(init/0 :: () -> ok | {error, atom(), string()}).
 init() ->
-    erlang:load_nif("./priv/pytherl", 0).
+    erlang:load_nif("./priv/libpytherl", 0).
 
 -spec(call/3 :: (string() | list(string()), string(), list()) -> term()).
 call(Mod, Fun, Args) when is_list(Mod), 
@@ -29,7 +29,7 @@ call(Mod, Fun, Args0) ->
 transform_params(Args) when is_list(Args) ->
     case is_string(Args) of
         true ->
-            Args;
+            [34 | Args] ++ "\"";
         false ->
             "[" ++ string:join([transform_params(Arg) || 
                                    Arg <- Args], [$,]) ++ "]"

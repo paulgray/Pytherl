@@ -14,8 +14,8 @@ CDIR=priv/
 ERLDIR=ebin/
 
 C_FILES=$(wildcard $(SRC_CDIR)*c)
-DRIVER=$(CDIR)pytherl.so
-BEAM=$(ERLDIR)pytherl.beam $(ERLDIR)python_re.beam $(ERLDIR)pe_generator.beam
+DRIVER=$(CDIR)libpytherl.so
+BEAM=$(ERLDIR)pytherl.beam
 
 all: $(DRIVER) $(BEAM)
 

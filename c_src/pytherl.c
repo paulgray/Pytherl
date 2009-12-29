@@ -1,4 +1,4 @@
-#include "pytherl.h"
+#import "pytherl.h"
 
 // TODO: implement reload and upgrade functions
 
@@ -20,7 +20,7 @@ static ERL_NIF_TERM nif_call(ErlNifEnv* env,
   PyObject *pyRes = pytherl_call(mod, fun, args, arg_size);
   ERL_NIF_TERM erlRes = py_to_erl(env, pyRes);
 
-  free(args);
+  //  free(args);
 
   return erlRes;
 }

@@ -1,10 +1,11 @@
 #import "pytherl.h"
 
 PyObject *pytherl_call(char *mod, char *fun, char *args, int arg_size) {
-  char *command = (char *)malloc(sizeof(char)*(arg_size + strlen(fun) + 16));
+  char *command = (char *)calloc(2*(arg_size + strlen(fun)), sizeof(char));
   assert(command);
 
-  PyImport_ImportModule(mod);
+  sprintf(command, "import %s", mod);
+  PyRun_SimpleString(command);
 
   sprintf(command, "result = %s(%s)", fun, args);
   PyRun_SimpleString(command);
