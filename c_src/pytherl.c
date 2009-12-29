@@ -2,19 +2,21 @@
 
 // TODO: implement reload and upgrade functions
 
-static ERL_NIF_TERM hello(ErlNifEnv* env) {
-  return enif_make_string(env, hello_from_python());
-}
-
-static ERL_NIF_TERM re_match(ErlNifEnv* env, 
-                             ERL_NIF_TERM e_subject,
-                             ERL_NIF_TERM e_pattern) {
+static ERL_NIF_TERM nif_call(ErlNifEnv* env, 
+                             ERL_NIF_TERM e_mod,
+                             ERL_NIF_TERM e_fun,
+                             ERL_NIF_TERM e_args) {
   
-  char subject[1024], pattern[1024];
-  erl_list_to_string(env, e_subject, subject);
-  erl_list_to_string(env, e_pattern, pattern);
+  char mod[4096], fun[4096];
+  erl_list_to_string(env, e_mod, mod);
+  erl_list_to_string(env, e_fun, fun);
+  char *args = erl_arg_list_to_string(env, e_args);
 
-  return enif_make_atom(env, re_match_py(subject, pattern) ? "true" : "false");
+  pytherl_call(mod, fun, args);
+
+  free(args);
+
+  return "something";
 }
 
 static int load(ErlNifEnv *env, void** priv, ERL_NIF_TERM load_info) {
@@ -27,8 +29,7 @@ static void unload(ErlNifEnv* env, void* priv) {
 }
 
 static ErlNifFunc nif_funcs[] = {
-  {"hello", 0, hello},
-  {"match", 2, re_match}
+  {"nif_call", 3, nif_call}
 }; 
 
 ERL_NIF_INIT(pytherl, nif_funcs, load, NULL, NULL, unload)
