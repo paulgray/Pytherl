@@ -1,5 +1,7 @@
 #import "pytherl.h"
 
+// TODO - implement tuple and list convertions
+
 ERL_NIF_TERM py_to_erl(ErlNifEnv *env, PyObject *pyObj) {
   if(PyInt_Check(pyObj)) {
     return enif_make_int(env, (int)PyInt_AS_LONG(pyObj));
