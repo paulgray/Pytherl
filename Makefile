@@ -3,7 +3,7 @@ PYTHON_INCLUDE=/usr/include/python2.6/
 
 INCLUDES= -I$(ERL_INCLUDE) -I$(PYTHON_INCLUDE)
 
-GCC_FLAGS=-fPIC -shared -Wall
+GCC_FLAGS=-fPIC -shared -Wall 
 LIBS=-lpython2.6
 
 CFLAGS=$(GCC_FLAGS) $(INCLUDES) $(LIBS)

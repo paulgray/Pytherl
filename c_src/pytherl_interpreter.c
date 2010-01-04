@@ -16,6 +16,10 @@ PyObject *pytherl_call(char *mod, char *fun, char *args, int arg_size) {
 
   free(command);
 
+  return pytherl_result();
+};
+
+PyObject *pytherl_result() {
   PyObject *module = PyImport_AddModule("__main__");
   assert(module);
   PyObject *dictionary = PyModule_GetDict(module);
