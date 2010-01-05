@@ -1,7 +1,10 @@
 -module(pytherl).
 
 -export([init/0]).
--export([call/3]).
+-export([call/3, call/2]).
+-export([eval/1]).
+
+-on_load(init/0).
 
 %% TODO - implement helper functions for calling native Python funs:
 %% call/2
@@ -14,16 +17,41 @@
 init() ->
     erlang:load_nif("./priv/libpytherl", 0).
 
+%%
+%% Executes the following Python code:
+%%   import Imports
+%%   Command(Args)
+%%
+%% where Imports is either a single string or a list of string which will
+%% be transformed into a single dotted one.
+%%
+%% The result of the command execution will be cast to the corresponding
+%% Erlang type. Objects will be transformed into a proplists where keys
+%% will be object attributes' names and values will be a cast attributes
+%% values.
+%%
 -spec(call/3 :: (string() | list(string()), string(), list()) -> term()).
-call(Mod, Fun, Args) when is_list(Mod), 
-                          is_integer(hd(Mod)) ->
-    call([Mod], Fun, Args);
-call(Mod, Fun, Args0) ->
+call(Imports, Command, Args) when is_list(Imports), 
+                                  is_integer(hd(Imports)) ->
+    call([Imports], Command, Args);
+call(Imports, Command, Args0) ->
     Args1 = string:join(lists:map(fun transform_params/1, Args0), ", "),
     Args = string:right(integer_to_list(length(Args1)), 8, $0) ++
         Args1,
     
-    nif_call(string:join(Mod, [$.]), Fun, Args).
+    nif_call(string:join(Imports, [$.]), Command, Args).
+
+-spec(call/2 :: (string(), list()) -> term()).
+call(Command, Args0) ->
+    Args1 = string:join(lists:map(fun transform_params/1, Args0), ", "),
+    Args = string:right(integer_to_list(length(Args1)), 8, $0) ++
+        Args1,
+
+    nif_call(Command, Args).
+
+-spec(eval/1 :: (string()) -> term()).
+eval(Command) ->
+    nif_eval(Command).
 
 -spec(transform_params/1 :: (term()) -> term() | no_return()).
 transform_params(Args) when is_list(Args) ->
@@ -56,4 +84,11 @@ is_string(Term) when is_list(Term) ->
 
 -spec(nif_call/3 :: (string(), string(), list()) -> any()).
 nif_call(_Mod, _Fun, _Args) ->
+    exit(nif_not_loaded).
+
+-spec(nif_call/2 :: (string(), list()) -> any()).
+nif_call(_Fun, _Args) ->
+    exit(nif_not_loaded).
+
+nif_eval(_Code) ->
     exit(nif_not_loaded).

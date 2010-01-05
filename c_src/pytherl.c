@@ -25,6 +25,17 @@ static ERL_NIF_TERM nif_call(ErlNifEnv* env,
   return erlRes;
 }
 
+static ERL_NIF_TERM nif_call_native(ErlNifEnv *env,
+                                    ERL_NIF_TERM e_fun,
+                                    ERL_NIF_TERM e_args) {
+  return enif_make_atom(env, "ok");
+}
+
+static ERL_NIF_TERM nif_eval(ErlNifEnv *env,
+                             ERL_NIF_TERM e_code) {
+  return enif_make_atom(env, "ok");
+}
+
 static int load(ErlNifEnv *env, void** priv, ERL_NIF_TERM load_info) {
   //  Py_Initialize();
   return 0;
@@ -35,7 +46,9 @@ static void unload(ErlNifEnv* env, void* priv) {
 }
 
 static ErlNifFunc nif_funcs[] = {
-  {"nif_call", 3, nif_call}
+  {"nif_call", 3, nif_call},
+  {"nif_call", 2, nif_call_native},
+  {"nif_eval", 1, nif_eval}
 }; 
 
 ERL_NIF_INIT(pytherl, nif_funcs, load, NULL, NULL, unload)
