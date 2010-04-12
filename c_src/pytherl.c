@@ -36,7 +36,9 @@ static ERL_NIF_TERM nif_call_native(ErlNifEnv *env,
 static ERL_NIF_TERM nif_eval(ErlNifEnv *env,
                              int argc,
                              const ERL_NIF_TERM argv[]) {
-  return enif_make_atom(env, "ok");
+    
+
+    return enif_make_atom(env, "ok");
 }
 
 static int load(ErlNifEnv *env, void** priv, ERL_NIF_TERM load_info) {

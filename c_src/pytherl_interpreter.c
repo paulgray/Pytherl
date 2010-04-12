@@ -11,7 +11,7 @@ PyObject *pytherl_call(char *mod, char *fun, char *args, int arg_size) {
   sprintf(command, "import %s", mod);
   PyRun_SimpleString(command);
 
-  sprintf(command, "result = %s(%s)", fun, args);
+  sprintf(command, "__pytherl_result = %s(%s)", fun, args);
   PyRun_SimpleString(command);
 
   free(command);
@@ -24,7 +24,7 @@ PyObject *pytherl_result() {
   assert(module);
   PyObject *dictionary = PyModule_GetDict(module);
   assert(dictionary);
-  PyObject *result = PyDict_GetItemString(dictionary, "result");
+  PyObject *result = PyDict_GetItemString(dictionary, "__pytherl_result");
   assert(result);
 
   return result;

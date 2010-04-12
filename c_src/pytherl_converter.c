@@ -1,7 +1,5 @@
 #import "pytherl.h"
 
-// TODO - implement tuple convertions
-
 ERL_NIF_TERM pytherl_make_tuple(ErlNifEnv *env, PyObject *obj) {
     Py_ssize_t size = PyTuple_Size(obj), i;
     ERL_NIF_TERM *array = (ERL_NIF_TERM *) malloc(sizeof(ERL_NIF_TERM)*size);
@@ -54,9 +52,9 @@ ERL_NIF_TERM pytherl_make_proplist(ErlNifEnv *env, PyObject *obj) {
 };
 
 ERL_NIF_TERM pytherl_class_to_proplist(ErlNifEnv *env, PyObject *obj) {
-  PyRun_SimpleString("result = dict((name, getattr(result, name)) for name in dir(result) if not name.startswith('__'))");
-  
-  return py_to_erl(env, pytherl_result());
+    PyRun_SimpleString("__pytherl_result = dict((name, getattr(__pytherl_result, name)) for name in dir(__pytherl_result) if not name.startswith('__'))");
+    
+    return py_to_erl(env, pytherl_result());
 };
 
 ERL_NIF_TERM py_to_erl(ErlNifEnv *env, PyObject *pyObj) {
@@ -74,6 +72,8 @@ ERL_NIF_TERM py_to_erl(ErlNifEnv *env, PyObject *pyObj) {
         return pytherl_make_proplist(env, pyObj);
     } else if(PyTuple_Check(pyObj)) {
         return pytherl_make_tuple(env, pyObj);
+    } else if(PyFloat_Check(pyObj)) {
+        return enif_make_double(env, PyFloat_AsDouble(pyObj));
     };
     
     return enif_make_badarg(env);
