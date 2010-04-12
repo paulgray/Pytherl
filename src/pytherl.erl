@@ -2,7 +2,7 @@
 
 -export([init/0]).
 -export([call/3, call/2]).
--export([eval/1]).
+-export([eval/2]).
 
 -on_load(init/0).
 
@@ -49,9 +49,9 @@ call(Command, Args0) ->
 
     nif_call(Command, Args).
 
--spec(eval/1 :: (string()) -> term()).
-eval(Command) ->
-    nif_eval(Command).
+-spec(eval/2 :: (string(), string()) -> term()).
+eval(Command, VarName) ->
+    nif_eval(Command, VarName).
 
 -spec(transform_params/1 :: (term()) -> term() | no_return()).
 transform_params(Args) when is_list(Args) ->
@@ -90,5 +90,6 @@ nif_call(_Mod, _Fun, _Args) ->
 nif_call(_Fun, _Args) ->
     exit(nif_not_loaded).
 
-nif_eval(_Code) ->
+-spec(nif_eval/2 :: (string(), string()) -> any()).
+nif_eval(_Code, _ResultVarName) ->
     exit(nif_not_loaded).
