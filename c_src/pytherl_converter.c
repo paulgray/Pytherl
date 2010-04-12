@@ -2,6 +2,19 @@
 
 // TODO - implement tuple convertions
 
+ERL_NIF_TERM pytherl_make_tuple(ErlNifEnv *env, PyObject *obj) {
+    Py_ssize_t size = PyTuple_Size(obj), i;
+    ERL_NIF_TERM *array = (ERL_NIF_TERM *) malloc(sizeof(ERL_NIF_TERM)*size);
+    for(i = 0; i<size; i++) {
+        array[i] = py_to_erl(env, PyTuple_GetItem(obj, i));
+    };
+
+    ERL_NIF_TERM tuple = enif_make_tuple_from_array(env, array, size);
+    free(array);
+
+    return tuple;
+};
+
 ERL_NIF_TERM pytherl_make_list(ErlNifEnv *env, PyObject *obj) {
   Py_ssize_t size = PyList_Size(obj), i;
   ERL_NIF_TERM list = enif_make_list(env, 0);
@@ -59,6 +72,8 @@ ERL_NIF_TERM py_to_erl(ErlNifEnv *env, PyObject *pyObj) {
         return pytherl_class_to_proplist(env, pyObj);
     } else if(PyDict_Check(pyObj)) {
         return pytherl_make_proplist(env, pyObj);
+    } else if(PyTuple_Check(pyObj)) {
+        return pytherl_make_tuple(env, pyObj);
     };
     
     return enif_make_badarg(env);
