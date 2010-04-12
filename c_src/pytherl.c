@@ -3,18 +3,20 @@
 // TODO: implement reload and upgrade functions
 
 static ERL_NIF_TERM nif_call(ErlNifEnv* env, 
-                             ERL_NIF_TERM e_mod,
-                             ERL_NIF_TERM e_fun,
-                             ERL_NIF_TERM e_args) {
+                             int argc,
+                             const ERL_NIF_TERM argv[]) {
   
   int arg_size;
   char mod[4096], fun[4096];
-  erl_list_to_string(env, e_mod, mod);
-  erl_list_to_string(env, e_fun, fun);
-  char *args = erl_arg_list_to_string(env, e_args, &arg_size);
+
+  assert(argc == 3);
+
+  erl_list_to_string(env, argv[0], mod);
+  erl_list_to_string(env, argv[1], fun);
+  char *args = erl_arg_list_to_string(env, argv[2], &arg_size);
 
   if(args == NULL) {
-    return enif_make_badarg(env);
+      return enif_make_badarg(env);
   };
 
   PyObject *pyRes = pytherl_call(mod, fun, args, arg_size);
@@ -26,13 +28,14 @@ static ERL_NIF_TERM nif_call(ErlNifEnv* env,
 }
 
 static ERL_NIF_TERM nif_call_native(ErlNifEnv *env,
-                                    ERL_NIF_TERM e_fun,
-                                    ERL_NIF_TERM e_args) {
+                                    int argc,
+                                    const ERL_NIF_TERM argv[]) {
   return enif_make_atom(env, "ok");
 }
 
 static ERL_NIF_TERM nif_eval(ErlNifEnv *env,
-                             ERL_NIF_TERM e_code) {
+                             int argc,
+                             const ERL_NIF_TERM argv[]) {
   return enif_make_atom(env, "ok");
 }
 

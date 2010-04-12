@@ -1,4 +1,4 @@
-ERL_INCLUDE=/usr/local/erlang/r13b03/lib/erlang/usr/include
+ERL_INCLUDE=/usr/local/erlang/r13b04/lib/erlang/usr/include
 PYTHON_INCLUDE=/usr/include/python2.6/
 
 INCLUDES= -I$(ERL_INCLUDE) -I$(PYTHON_INCLUDE)

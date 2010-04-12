@@ -47,19 +47,19 @@ ERL_NIF_TERM pytherl_class_to_proplist(ErlNifEnv *env, PyObject *obj) {
 };
 
 ERL_NIF_TERM py_to_erl(ErlNifEnv *env, PyObject *pyObj) {
-  if(PyInt_Check(pyObj)) {
-    return enif_make_int(env, (int)PyInt_AS_LONG(pyObj));
-  } else if(PyBool_Check(pyObj)) {
-    return enif_make_atom(env, Py_True == pyObj ? "true" : "false");
-  } else if(PyString_Check(pyObj)) {
-    return enif_make_string(env, PyString_AsString(pyObj));
-  } else if(PyList_Check(pyObj)) {
-    return pytherl_make_list(env, pyObj);
-  } else if(PyInstance_Check(pyObj)) {
-    return pytherl_class_to_proplist(env, pyObj);
-  } else if(PyDict_Check(pyObj)) {
-    return pytherl_make_proplist(env, pyObj);
-  };
-
-  return enif_make_badarg(env);
+    if(PyInt_Check(pyObj)) {
+        return enif_make_int(env, (int)PyInt_AS_LONG(pyObj));
+    } else if(PyBool_Check(pyObj)) {
+        return enif_make_atom(env, Py_True == pyObj ? "true" : "false");
+    } else if(PyString_Check(pyObj)) {
+        return enif_make_string(env, PyString_AsString(pyObj), ERL_NIF_LATIN1);
+    } else if(PyList_Check(pyObj)) {
+        return pytherl_make_list(env, pyObj);
+    } else if(PyInstance_Check(pyObj)) {
+        return pytherl_class_to_proplist(env, pyObj);
+    } else if(PyDict_Check(pyObj)) {
+        return pytherl_make_proplist(env, pyObj);
+    };
+    
+    return enif_make_badarg(env);
 };
