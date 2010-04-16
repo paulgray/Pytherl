@@ -54,7 +54,8 @@ ERL_NIF_TERM pytherl_make_proplist(ErlNifEnv *env, PyObject *obj) {
 ERL_NIF_TERM pytherl_class_to_proplist(ErlNifEnv *env, PyObject *obj) {
     PyRun_SimpleString("__pytherl_result = dict((name, getattr(__pytherl_result, name)) for name in dir(__pytherl_result) if not name.startswith('__'))");
     
-    return py_to_erl(env, pytherl_result());
+    ErlNifMutex *interpreter_mutex = (ErlNifMutex *) enif_priv_data(env);
+    return py_to_erl(env, pytherl_result(interpreter_mutex));
 };
 
 ERL_NIF_TERM py_to_erl(ErlNifEnv *env, PyObject *pyObj) {

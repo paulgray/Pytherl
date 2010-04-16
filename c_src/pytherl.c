@@ -19,7 +19,8 @@ static ERL_NIF_TERM nif_call(ErlNifEnv* env,
       return enif_make_badarg(env);
   };
 
-  PyObject *pyRes = pytherl_call(mod, fun, args, arg_size);
+  ErlNifMutex *interpreter_mutex = (ErlNifMutex *) enif_priv_data(env);
+  PyObject *pyRes = pytherl_call(mod, fun, args, arg_size, interpreter_mutex);
   ERL_NIF_TERM erlRes = py_to_erl(env, pyRes);
 
   free(args);
@@ -43,19 +44,28 @@ static ERL_NIF_TERM nif_eval(ErlNifEnv *env,
     erl_list_to_string(env, argv[0], code);
     erl_list_to_string(env, argv[1], result_var_name);
 
-    PyObject *pyRes = pytherl_eval(code, result_var_name);
+    ErlNifMutex *interpreter_mutex = (ErlNifMutex *) enif_priv_data(env);
+    PyObject *pyRes = pytherl_eval(code, result_var_name, interpreter_mutex);
     ERL_NIF_TERM erlRes = py_to_erl(env, pyRes);
 
     return erlRes; 
 }
 
 static int load(ErlNifEnv *env, void** priv, ERL_NIF_TERM load_info) {
-  //  Py_Initialize();
-  return 0;
+    ErlNifMutex *interpreter_mutex = enif_mutex_create("interpreter_mutex");
+    assert(interpreter_mutex);
+
+    *priv = interpreter_mutex;
+    
+    return 0;
 }
 
 static void unload(ErlNifEnv* env, void* priv) {
-  //  Py_Finalize();
+    ErlNifMutex *interpreter_mutex = (ErlNifMutex *) priv;
+
+    enif_mutex_lock(interpreter_mutex);
+    Py_Finalize();
+    enif_mutex_unlock(interpreter_mutex);
 }
 
 static ErlNifFunc nif_funcs[] = {
